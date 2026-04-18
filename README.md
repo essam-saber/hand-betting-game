@@ -2,9 +2,7 @@
 
 A web-based betting game using Mahjong tiles.
 
-**Live demo:** _(will be added after deploy)_
-
-Open https://hand-betting-game-ten.vercel.app/
+**Live demo:** https://hand-betting-game-ten.vercel.app/
 
 ## Run locally
 
@@ -39,8 +37,6 @@ src/
 
 The engine is the heart. It's a set of pure functions: `createNewGame()` returns a `GameState`, `placeBet(state, direction)` returns a new `GameState`. No mutation. No framework. The store calls the engine and stores the result. The UI reads from the store and dispatches actions. Each layer has one job.
 
-This separation is deliberate. The task said the onsite would test extending the codebase, so I built the rules in a place where they can change without touching React, and the UI in a place where it can change without touching gameplay logic.
-
 ---
 
 ## Design decisions
@@ -48,7 +44,7 @@ This separation is deliberate. The task said the onsite would test extending the
 The spec left a few things open. My choices:
 
 **Tile values are tracked per type, not per copy.**
-All four "Red Dragon" tiles share one value, mapped by `typeKey`. Per-copy tracking would barely move values during a session — most tiles get drawn 0–1 times in a 136-tile deck — so the game would always end via the reshuffle limit rather than via the value boundary. Per-type makes the boundary condition reachable and the game more dynamic.
+All four "Red Dragon" tiles share one value, mapped by `typeKey`. Per-copy tracking would barely move values during a session, most tiles get drawn 0–1 times in a 136-tile deck, so the game would always end via the reshuffle limit rather than via the value boundary. Per-type makes the boundary condition reachable and the game more dynamic.
 
 **A tie counts as a loss.**
 The player must guess strictly higher or lower. Simpler to reason about than retry/skip rules and keeps the game moving.
@@ -72,9 +68,9 @@ The spec didn't ask for persistence but a leaderboard that resets on refresh isn
 
 ## Tech stack
 
-- **React + Vite + TypeScript** — fast setup, strict types.
-- **Zustand** — minimal state management, ~1KB. Plays well with the pure-engine pattern.
-- **Tailwind CSS** — quick to style without writing a separate stylesheet. Custom keyframe animations in `index.css`.
+- **React + Vite + TypeScript** - fast setup, strict types.
+- **Zustand** - minimal state management, ~1KB. Plays well with the pure-engine pattern.
+- **Tailwind CSS** - quick to style without writing a separate stylesheet. Custom keyframe animations in `index.css`.
 
 No backend. No router. No test framework (see "What I'd do with more time" below).
 
@@ -82,10 +78,10 @@ No backend. No router. No test framework (see "What I'd do with more time" below
 
 ## What I'd do with more time
 
-- **Unit tests for the engine** with Vitest. The engine being pure makes this straightforward — I sanity-checked it with a smoke test during development but didn't write a proper suite.
-- **Sound effects** on bet outcomes — small touch that elevates the feel further.
-- **Animated tile-value changes** — currently they update silently after a bet; a quick "+1" / "-1" floater would make the rule visible.
-- **Accessibility pass** — keyboard nav across the main actions, ARIA labels on tiles, focus rings on all interactive elements.
+- **Unit tests for the engine** with Vitest. The engine being pure makes this straightforward.
+- **Sound effects** on bet outcomes - small touch that elevates the feel further.
+- **Animated tile-value changes** - currently they update silently after a bet; a quick "+1" / "-1" floater would make the rule visible.
+- **Accessibility pass** - keyboard nav across the main actions, ARIA labels on tiles, focus rings on all interactive elements.
 
 ---
 
@@ -102,6 +98,6 @@ I used AI (Claude) as a pair-programming partner throughout this project.
 - All architectural decisions: separating the pure engine from React, the reducer pattern in `placeBet`, tracking values by `typeKey` instead of per copy, the layer structure.
 - Every gameplay rule decision where the spec was ambiguous (documented above).
 - Build sanity checks during development (TypeScript strict mode, smoke testing the engine before merging).
-- Code review on every line — I rejected suggestions that were over-engineered, over-commented, or didn't fit the codebase style.
+- Code review on every line - I rejected suggestions that were over-engineered, over-commented, or didn't fit the codebase style.
 
 If you ask me about any file in this repo during the onsite, I can walk through what it does and why it's structured that way.
