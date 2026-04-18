@@ -1,23 +1,19 @@
-import { Tile, NumberSuit, DragonType, WindType } from "./tiles";
+import type { Tile, NumberSuit, DragonType, WindType } from "./tiles";
 
 const SUITS: NumberSuit[] = ["bamboo", "circles", "characters"];
 const DRAGONS: DragonType[] = ["red", "green", "white"];
 const WINDS: WindType[] = ["east", "south", "west", "north"];
 
-// === Build a fresh standard Mahjong deck (136 tiles) ===
-// 3 suits x 9 numbers x 4 copies = 108 number tiles
-// 3 dragons x 4 copies = 12 dragon tiles
-// 4 winds x 4 copies = 16 wind tiles
-// total = 136 tiles
+const COPIES_PER_TILE = 4;
+
 export function buildFreshDeck(): Tile[] {
   const tiles: Tile[] = [];
 
-  // number tiles
   for (const suit of SUITS) {
     for (let value = 1; value <= 9; value++) {
-      for (let copy = 0; copy < 4; copy++) {
+      for (let copy = 0; copy < COPIES_PER_TILE; copy++) {
         tiles.push({
-          id: `${suit}-${value}-${copy}-${Math.random()}`,
+          id: makeId(`${suit}-${value}`, copy),
           category: "number",
           typeKey: `${suit}-${value}`,
           label: `${value} ${capitalize(suit)}`,
@@ -26,11 +22,10 @@ export function buildFreshDeck(): Tile[] {
     }
   }
 
-  // dragon tiles
   for (const dragon of DRAGONS) {
-    for (let copy = 0; copy < 4; copy++) {
+    for (let copy = 0; copy < COPIES_PER_TILE; copy++) {
       tiles.push({
-        id: `dragon-${dragon}-${copy}-${Math.random()}`,
+        id: makeId(`dragon-${dragon}`, copy),
         category: "dragon",
         typeKey: `dragon-${dragon}`,
         label: `${capitalize(dragon)} Dragon`,
@@ -38,11 +33,10 @@ export function buildFreshDeck(): Tile[] {
     }
   }
 
-  // wind tiles
   for (const wind of WINDS) {
-    for (let copy = 0; copy < 4; copy++) {
+    for (let copy = 0; copy < COPIES_PER_TILE; copy++) {
       tiles.push({
-        id: `wind-${wind}-${copy}-${Math.random()}`,
+        id: makeId(`wind-${wind}`, copy),
         category: "wind",
         typeKey: `wind-${wind}`,
         label: `${capitalize(wind)} Wind`,
@@ -53,7 +47,6 @@ export function buildFreshDeck(): Tile[] {
   return tiles;
 }
 
-// === Fisher-Yates shuffle (the standard fair shuffle algorithm) ===
 export function shuffle<T>(array: T[]): T[] {
   const result = [...array];
   for (let i = result.length - 1; i > 0; i--) {
@@ -61,6 +54,10 @@ export function shuffle<T>(array: T[]): T[] {
     [result[i], result[j]] = [result[j], result[i]];
   }
   return result;
+}
+
+function makeId(typeKey: string, copy: number): string {
+  return `${typeKey}-${copy}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
 function capitalize(s: string): string {
