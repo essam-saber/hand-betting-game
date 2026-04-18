@@ -1,6 +1,6 @@
 # Hand Betting Game
 
-A web-based betting game using Mahjong tiles. Built as a technical assessment.
+A web-based betting game using Mahjong tiles.
 
 **Live demo:** _(will be added after deploy)_
 
