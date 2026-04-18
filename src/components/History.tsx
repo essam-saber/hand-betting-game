@@ -15,11 +15,11 @@ export function History({ entries }: Props) {
   }
 
   return (
-    <div className="space-y-2 max-h-64 overflow-y-auto pr-2">
+    <div className="space-y-2 max-h-64 overflow-y-auto pr-2 history-scroll">
       {entries.map((entry, i) => (
         <div
-          key={i}
-          className="flex items-center gap-3 p-2 rounded-lg bg-slate-800/40"
+          key={`${i}-${entry.total}`}
+          className={`flex items-center gap-3 p-2 rounded-lg bg-slate-800/40 border border-slate-700/40 ${i === 0 ? "slide-in" : ""}`}
         >
           <div className="flex gap-1">
             {entry.tiles.map((t) => (
