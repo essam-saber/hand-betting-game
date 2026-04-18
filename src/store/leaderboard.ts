@@ -2,6 +2,7 @@ const STORAGE_KEY = "hbg.leaderboard";
 const MAX_ENTRIES = 5;
 
 export interface LeaderboardEntry {
+  name: string;
   score: number;
   date: string;
 }
@@ -17,9 +18,10 @@ export function loadLeaderboard(): LeaderboardEntry[] {
   }
 }
 
-export function saveScore(score: number): LeaderboardEntry[] {
+export function saveScore(name: string, score: number): LeaderboardEntry[] {
+  const cleanName = name.trim() || "Anonymous";
   const current = loadLeaderboard();
-  const updated = [...current, { score, date: new Date().toISOString() }]
+  const updated = [...current, { name: cleanName, score, date: new Date().toISOString() }]
     .sort((a, b) => b.score - a.score)
     .slice(0, MAX_ENTRIES);
 

@@ -31,17 +31,18 @@ export function Landing() {
           ) : (
             <ol className="space-y-2">
               {leaderboard.map((entry, i) => (
-                <li
-                  key={`${entry.date}-${i}`}
-                  className="flex items-center justify-between text-slate-200"
+               <li
+                key={`${entry.date}-${i}`}
+                className="flex items-center justify-between text-slate-200 gap-3"
                 >
-                  <span className="flex items-center gap-3">
-                    <span className="w-6 text-slate-500 text-sm">{i + 1}.</span>
-                    <span className="font-mono text-lg">{entry.score}</span>
-                  </span>
-                  <span className="text-xs text-slate-500">
+                <span className="flex items-center gap-3 min-w-0 flex-1">
+                    <span className="w-6 text-slate-500 text-sm shrink-0">{i + 1}.</span>
+                    <span className="truncate">{entry.name}</span>
+                </span>
+                <span className="font-mono text-lg shrink-0">{entry.score}</span>
+                <span className="text-xs text-slate-500 shrink-0 hidden sm:inline">
                     {new Date(entry.date).toLocaleDateString()}
-                  </span>
+                </span>
                 </li>
               ))}
             </ol>
