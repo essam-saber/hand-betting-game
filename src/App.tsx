@@ -1,9 +1,15 @@
+import { useGameStore } from "./store/gameStore";
+import { Landing } from "./pages/Landing";
+
 function App() {
+  const game = useGameStore((s) => s.game);
+
+  if (!game) return <Landing />;
+
+  // Game and End pages come in next steps
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-emerald-400">
-        Hand Betting Game — Setup OK
-      </h1>
+      <p className="text-slate-400">Game in progress (UI coming next)…</p>
     </div>
   );
 }
