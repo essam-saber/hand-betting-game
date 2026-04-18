@@ -1,17 +1,19 @@
 import { useGameStore } from "./store/gameStore";
 import { Landing } from "./pages/Landing";
+import { Game } from "./pages/Game";
 
 function App() {
   const game = useGameStore((s) => s.game);
 
   if (!game) return <Landing />;
-
-  // Game and End pages come in next steps
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <p className="text-slate-400">Game in progress (UI coming next)…</p>
-    </div>
-  );
+  if (game.isGameOver) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-slate-400">End screen coming next…</p>
+      </div>
+    );
+  }
+  return <Game />;
 }
 
 export default App;
