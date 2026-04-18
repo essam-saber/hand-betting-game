@@ -13,6 +13,7 @@ interface GameStore {
 
   startNewGame: () => void;
   bet: (direction: BetDirection) => void;
+  saveCurrentScore: (name: string) => void;
   exitToLanding: () => void;
 }
 
@@ -27,17 +28,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
   bet: (direction) => {
     const current = get().game;
     if (!current) return;
+    set({ game: placeBet(current, direction) });
+  },
 
-    const next = placeBet(current, direction);
-
-    // If the bet ended the game, persist the score immediately
-    if (next.isGameOver && !current.isGameOver) {
-      const updated = saveScore(next.score);
-      set({ game: next, leaderboard: updated });
-      return;
-    }
-
-    set({ game: next });
+  saveCurrentScore: (name) => {
+    const current = get().game;
+    if (!current || !current.isGameOver) return;
+    const updated = saveScore(name, current.score);
+    set({ leaderboard: updated });
   },
 
   exitToLanding: () => {
